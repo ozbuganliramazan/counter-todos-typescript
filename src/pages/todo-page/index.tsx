@@ -26,15 +26,37 @@ export default function TodoPage() {
       is_done: true,
     },
   ]);
-  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
-event.preventDefault();
+  const [editTodo, setEditTodo] = useState<TodoType | null>(null);
 
+  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-const data =new FormData(event.currentTarget);
-const value = Object.fromEntries(data.entries());
-console.log(value);
+    const formData = new FormData(event.currentTarget);
+    const formJson = Object.fromEntries(formData.entries());
 
-  }
+    if (editTodo) {
+      const filteredItem: TodoType | undefined = todos.find(
+        (item, index) => item.id === editTodo.id
+      );
+
+      if (filteredItem) {
+        filteredItem.title = formJson.title as string;
+        filteredItem.is_done = formJson.is_done ? true : false;
+      } else {
+        alert("todo bulamadı");
+      }
+    } else {
+      todos.push({
+        id: todos.length + 1,
+        title: formJson.title as string,
+        is_done: formJson.is_done ? true : false,
+      });
+    }
+
+    setTodos([...todos]);
+
+    setModalShow(false);
+  };
 
   return (
     <>
@@ -46,14 +68,24 @@ console.log(value);
           <Modal.Body>
             <Form.Group className="mb-3">
               <Form.Label>Todo Title:</Form.Label>
-              <Form.Control type="text" name="title" placeholder="Todo Add" />
+              <Form.Control
+                type="text"
+                name="title"
+                placeholder="Todo Add"
+                defaultValue={editTodo ? editTodo.title : ""}
+              />
               <Form.Text className="text-muted">
                 Write todo title here.
               </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Check type="checkbox" name="is_done" label="Is Done?" />
+              <Form.Check
+                type="checkbox"
+                name="is_done"
+                label="Is Done?"
+                defaultChecked={editTodo ? editTodo.is_done : false}
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
@@ -77,7 +109,10 @@ console.log(value);
       <Row>
         <Col sm={12}>
           <Button
-            onClick={() => setModalShow(true)}
+            onClick={() => {
+              setEditTodo(null);
+              setModalShow(true);
+            }}
             variant="primary"
             className="mb-3"
           >
@@ -99,15 +134,36 @@ console.log(value);
                     <td>{todo.id} </td>
                     <td>{todo.title} </td>
                     <td>
-                      <input type="checkbox" checked={todo.is_done} />
+                      <input
+                        onClick={() => {
+                          todos[index].is_done = !todos[index].is_done;
+                          setTodos([...todos]);
+                        }}
+                        type="checkbox"
+                        checked={todo.is_done}
+                      />
                       &nbsp;
                       {todo.is_done ? "Yapıldı" : "Bekliyor"}
                     </td>
                     <td>
-                      <Button variant="danger" className="me-2 btn-sm">
+                      <Button
+                        onClick={() => {
+                          todos.splice(index, 1);
+                          setTodos([...todos]);
+                        }}
+                        variant="danger"
+                        className="me-2 btn-sm"
+                      >
                         Delete
                       </Button>
-                      <Button variant="success" className="me-2 btn-sm">
+                      <Button
+                        onClick={() => {
+                          setEditTodo(todo);
+                          setModalShow(true);
+                        }}
+                        variant="success"
+                        className="me-2 btn-sm"
+                      >
                         Edit
                       </Button>
                     </td>
