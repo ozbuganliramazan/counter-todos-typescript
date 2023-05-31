@@ -5,7 +5,7 @@ export default function Header() {
     <header>
       <div className="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <Link
-        to={"/"}
+          to={"/"}
           className="d-flex align-items-center text-dark text-decoration-none"
         >
           <svg
@@ -28,18 +28,25 @@ export default function Header() {
         </Link>
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-          <Link to={"/"} className="me-3 py-2 text-dark text-decoration-none" >
-           MainPage
+          <Link to={"/"} className="me-3 py-2 text-dark text-decoration-none">
+            MainPage
           </Link>
-          <Link to={"todo"} className="me-3 py-2 text-dark text-decoration-none">
-        Todo Page
+          <Link
+            to={"todo"}
+            className="me-3 py-2 text-dark text-decoration-none"
+          >
+            Todo Page
           </Link>
-          <a className="me-3 py-2 text-dark text-decoration-none" href="#">
-            Support
-          </a>
-          <a className="py-2 text-dark text-decoration-none" href="#">
-            Pricing
-          </a>
+          <Link
+            to={"jsonplaceholder"}
+            className="me-3 py-2 text-dark text-decoration-none"
+          >
+            Json Placeholder
+          </Link>
+
+          <Link to={"about-us"} className="py-2 text-dark text-decoration-none">
+            About Us
+          </Link>
         </nav>
       </div>
     </header>
