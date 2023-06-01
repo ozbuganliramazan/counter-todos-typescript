@@ -130,12 +130,12 @@ export default function TodoPage() {
             <tbody>
               {todos.map<ReactElement>((todo: TodoType, index: number) => {
                 return (
-                  <tr key={index}>
+                  <tr key={todo.id}>
                     <td>{todo.id} </td>
                     <td>{todo.title} </td>
                     <td>
                       <input
-                        onClick={() => {
+                        onChange={() => {
                           todos[index].is_done = !todos[index].is_done;
                           setTodos([...todos]);
                         }}
