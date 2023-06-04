@@ -3,8 +3,9 @@ import useJsonPlaceholderApi, {
   JsonPlaceholderUserType,
 } from "../../hooks/useJsonPlaceholderApi";
 import { AxiosResponse } from "axios";
-import { Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function JsonPlaceholderPage() {
   const api: JsonPlaceholderApi = useJsonPlaceholderApi();
@@ -33,10 +34,41 @@ export default function JsonPlaceholderPage() {
         {users === null ? (
           <div>Loading...</div>
         ) : (
-          users.map((item, index) => {
+          users.map((user, index) => {
             return (
-              <Col sm="4" key={item.id}>
-                {item.name}
+              <Col sm="3">
+                <Card className="mb-4 rounded-3 shadow-sm border-primary">
+                  <Card.Header className="py-3 text-white bg-primary border-primary">
+                    <h4
+                      className="my-0 fw-normal"
+                      style={{
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {user.name +
+                        " test test test test test test ttes test aerg aerg earg"}
+                    </h4>
+                  </Card.Header>
+                  <Card.Body>
+                    <Card.Title>{user.username}</Card.Title>
+
+                    <ul className="list-unstyled mt-3 mb-4">
+                      <li>{user.email}</li>
+                      <li>{user.website}</li>
+                      <li>{user.phone}</li>
+                      <li>{user.address.city}</li>
+                    </ul>
+
+                    <Link
+                      to={"/jsonplaceholder/user/" + user.id}
+                      className="w-100 btn btn-lg btn-primary"
+                    >
+                      Details
+                    </Link>
+                  </Card.Body>
+                </Card>
               </Col>
             );
           })

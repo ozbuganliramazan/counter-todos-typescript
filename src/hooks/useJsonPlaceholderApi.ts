@@ -25,6 +25,12 @@ export type JsonPlaceholderUserType = {
   };
 };
 
+export type JsonPlaceholderAlbumType = {
+  userId: number;
+  id: number;
+  title: string;
+};
+
 export class JsonPlaceholderApi {
   private readonly axiosClient: Axios;
 
@@ -35,7 +41,7 @@ export class JsonPlaceholderApi {
 
   async users(start?: number, limit?: number) {
     
-    const result: AxiosResponse<JsonPlaceholderUserType[]> =
+  const result: AxiosResponse<JsonPlaceholderUserType[]> =
       await this.axiosClient.get<JsonPlaceholderUserType[]>("users", {
         params: {
           _start: start,
@@ -44,6 +50,47 @@ export class JsonPlaceholderApi {
       });
 
     return result;
+  }
+
+  async getUser(userId: number): Promise<JsonPlaceholderUserType> {
+   const result: AxiosResponse<JsonPlaceholderUserType> =
+      await this.axiosClient.get<JsonPlaceholderUserType>("users/" + userId);
+
+    return result.data;
+  }
+
+  async albums(
+    userId?: number,
+    start?: number,
+    limit?: number
+  ): Promise<JsonPlaceholderAlbumType[]> {
+    
+   const result: AxiosResponse<JsonPlaceholderAlbumType[]> =
+      await this.axiosClient.get<JsonPlaceholderAlbumType[]>("albums", {
+        params: {
+          userId: userId,
+          _start: start,
+          _limit: limit,
+        },
+      });
+
+    return result.data;
+  }
+
+  async posts(userId?: number, start?: number, limit?: number) {
+   
+    const  result: AxiosResponse<any[]> = await this.axiosClient.get<any[]>(
+      "posts",
+      {
+        params: {
+          userId: userId,
+          _start: start,
+          _limit: limit,
+        },
+      }
+    );
+
+    return result.data;
   }
 }
 
